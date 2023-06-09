@@ -1,0 +1,45 @@
+import requests
+import tkinter as tk
+
+def obtener_clima(ciudad):
+    # Configurar tu clave de API
+    api_key = 'TU_CLAVE_DE_API'
+
+    # Hacer la solicitud a la API de clima
+    url = f'http://api.weatherapi.com/v1/current.json?key={api_key}&q={ciudad}'
+    response = requests.get(url)
+    data = response.json()
+
+    # Obtener la información del clima
+    nombre_ciudad = data['location']['name']
+    temperatura = data['current']['temp_c']
+    condicion = data['current']['condition']['text']
+
+    # Devolver la información del clima
+    return f'{nombre_ciudad}: {temperatura}°C, {condicion}'
+
+def mostrar_clima():
+    # Crear la ventana de la aplicación
+    ventana = tk.Tk()
+    ventana.title('Clima en Colombia')
+
+    # Obtener el clima de todos los departamentos de Colombia
+    departamentos = ['Amazonas', 'Antioquia', 'Arauca', 'Atlántico', 'Bolívar', 'Boyacá', 'Caldas', 'Caquetá',
+                     'Casanare', 'Cauca', 'Cesar', 'Chocó', 'Córdoba', 'Cundinamarca', 'Guainía', 'Guaviare',
+                     'Huila', 'La Guajira', 'Magdalena', 'Meta', 'Nariño', 'Norte de Santander', 'Putumayo',
+                     'Quindío', 'Risaralda', 'San Andrés y Providencia', 'Santander', 'Sucre', 'Tolima', 'Valle del Cauca',
+                     'Vaupés', 'Vichada']
+
+    for i, departamento in enumerate(departamentos):
+        # Obtener el clima del departamento actual
+        clima = obtener_clima(departamento)
+
+        # Crear un cuadro de texto para mostrar el clima
+        etiqueta = tk.Label(ventana, text=clima)
+        etiqueta.grid(row=i, column=0, padx=10, pady=5)
+
+    # Iniciar el bucle principal de la aplicación
+    ventana.mainloop()
+
+# Ejecutar la función para mostrar el clima
+mostrar_clima()
